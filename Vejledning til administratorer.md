@@ -83,7 +83,7 @@ For at gøre SQL udtrykkene mere fleksible generaliseres til følgende:
     LEFT JOIN {t_mun_sqmprice} k ON b.{f_mun_code_t_building} = k.{f_mun_code_t_flood}
     WHERE o.{f_water_depth_t_flood} > {p_water_depth}
 
--Alle tabel- og feltnavne samt konstantværdier i SQL udtrykket erstattes af "tokens".  
+-Alle tabel- og feltnavne samt konstantværdier i SQL udtrykket erstattes af "tokens", som f.eks. "f_pkid_t_building". "tuborg" paranteserne {..} rundt om tokennavnet angiver at felt/tabel/konstanten er erstattet af et token.
 
 - SQL udtrykket opfattes selv som et token og gemmes under eksempelvis navnet "q_buiding_flood_loss".  
 
