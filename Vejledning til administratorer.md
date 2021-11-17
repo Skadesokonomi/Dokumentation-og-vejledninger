@@ -85,7 +85,7 @@ For at gøre SQL udtrykkene mere fleksible generaliseres til følgende:
 
 -Alle tabel- og feltnavne samt konstantværdier i SQL udtrykket erstattes af "tokens", som f.eks. "f_pkid_t_building". "tuborg" paranteserne {..} rundt om tokennavnet angiver at felt/tabel/konstanten er erstattet af et token.
 
-- SQL udtrykket opfattes selv som et token og gemmes under eksempelvis navnet "q_buiding_flood_loss".  
+- SQL udtrykket opfattes selv som et token og gemmes under eksempelvis navnet "q_building_flood_loss".  
 
 - Tabel, felt og konstant tokens gemmes slutteligt i parametertabellen. Sammen med selve token-navnet gemmes også tilhørsforholdet til SQL udtrykket samt token værdien, dvs. det originale tabel / feltnavn eller konstant værdi. 
 
