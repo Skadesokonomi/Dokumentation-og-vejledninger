@@ -102,4 +102,10 @@ GIS brugeren har via plugin'et mulighed for at dels at vælge en bestemt model, 
 Resten af denne vejlening beskriver GIS administrators mulighed for opsætning af modeller med tilhørende tokens og hvorledes de stilles til rådighed for brugeren 
 
 
+# Administrator vejledning for QGIS plugin "Skadesøkonomi"
 
+Selve installationen af hhv. plugin og tilhørende database, inklusive opsætning af Postgres username/password, sikkerhedskopiering er gennegået i installationsvejledningen, så disse oplysning kan findes i denne vejledning.
+
+### Opstart af plugin
+
+I QGIS
