@@ -123,55 +123,129 @@ skadeøkonomi databasen og derefter tilpasse de til modellen tilhørende tokenv�
 GIS brugeren har via plugin'et mulighed for at dels at vælge en bestemt model, dels ændre på modellens konstantværdier 
 før kørsel ved at ændre på de til modellen tilhørende token værdier for konstanter.
 
-# Beskrivelse af Parameter tabel
+# Parameter tabel
 
 Placering og navn på parametertabel i databasen angives af administrator vha. valg og indtastningsfelter i Plugin. Se 
 senere i denne vejledning. 
 
-Parameter tabellen indeholder *alle* nødvendige oplysninger til at beskrive og udføre de forskellige modeller. 
+Parameter tabellen en den centrale informationstabel for Skadeøkonomi plugin'et. 
+
+Den indeholder *alle* nødvendige oplysninger til at beskrive og udføre de forskellige modeller, bl.a. generaliserede 
+SQL udtryk for modellerne, alle "token" navne inkl. oversættelse for tabeller, felter, søge konstanter osv. 
+
 Endvidere indeholder tabellen en lang række andre administrative oplysninger nødvendige for at plugin'et kan 
 vise modelopbygningerne korrekt og at brugerne kan vælge modeller og sætte søgeværdier for for de enkelte modeller.
+
+Tabellen indeholder derfor en række forskellige oplysninger udover navn/værdi par. De forskellige kolonner og deres indhold 
+beskrives senere i dette afsnit.
 
 ## Struktur og feltbeskrivelse
 
 |Feltnavn|Type|Forklaring|
 |---|---|---|
-|name |tekst|Navn for token; skal være unikt i hele tabellen   |
-|parent |tekst|Navn på den token, som denne parameterpost er bundet til. Hvis den ikke er bundet til noge post, så efterlades den blank.|
-|value |tekst|Værdi af token; alle værdier er præsenteret som en tekststreng uanset type.|
-|type |karakter|Token type; kan være een af følgende: "G" for gruppe, "R" for reelt tal; "I" for heltal   |
-|minval |tekst|   |
-|maxval |tekst|   |
-|lookupvalues |tekst|   |
+|name|tekst|Navn for token; skal være unikt i hele tabellen   |
+|parent|tekst|Navn på den token, som denne parameterpost er bundet til. Hvis den ikke er bundet til nogen post, så efterlades den blank.|
+|value|tekst|Værdi af token; alle værdier er præsenteret som en tekststreng uanset type.|
+|type|karakter|Token type; kan være een af følgende: "G" for gruppe, "R" for reelt tal; "I" for heltal   |
+|minval|tekst|   |
+|maxval|tekst|   |
+|lookupvalues|tekst|   |
 |default|tekst |   |
-|explanation |tekst   |
-|sort|tekst |   |
-|checkable |karakter|   |
+|explanation|tekst   |
+|sort|tekst|   |
+|checkable|karakter|   |
 
-    name character varying COLLATE pg_catalog."default" NOT NULL,
-    parent character varying COLLATE pg_catalog."default",
-    value character varying COLLATE pg_catalog."default" NOT NULL,
-    type character varying(1) COLLATE pg_catalog."default" NOT NULL,
-    minval character varying COLLATE pg_catalog."default" NOT NULL,
-    maxval character varying COLLATE pg_catalog."default" NOT NULL,
-    lookupvalues character varying COLLATE pg_catalog."default" NOT NULL,
-    "default" character varying COLLATE pg_catalog."default" NOT NULL,
-    explanation character varying COLLATE pg_catalog."default" NOT NULL,
-    sort integer NOT NULL,
-    checkable "char" NOT NULL,
 
-TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS fdc_admin.parametre
-    OWNER to postgres;
--- Index: parametre_parent_idx
 
--- DROP INDEX IF EXISTS fdc_admin.parametre_parent_idx;
 
-CREATE INDEX IF NOT EXISTS parametre_parent_idx
-    ON fdc_admin.parametre USING btree
-    (parent COLLATE pg_catalog."default" ASC NULLS LAST)
-    TABLESPACE pg_default;
+## Retningslinjer for værdisætning af parametertabel.
+
+### Opbygning af hieraki vha. "parent" feltet
+
+Data i paramtertabellen arrangeres i et hieraki, hvor stort set alle poster (rækker i tabellen) "ejes" af en anden post. 
+
+Et ekesempel: En post beskriver hvorledes du oversætter et token navn til en aktuel tabel i databasen. Denne post vil 
+"eje" en række underposter, hvor de enkelte underposter beskriver hvorledes token for feltnavne i den specifikke tabel 
+oversættes til reelle feltnavne
+
+Denne facilitet benyttes også til at placere oplysningerne korrekt i plugin'ets fanebladssystem: Plugin'et har 5 faneblade, 
+som viser data fra parametertabellen: "Generel", "Forespørgsler", "Data", "Modeller" og "Rapporter".
+
+
+Hvert faneblad representeres af en post i parametertabellen. af disse faneblade har en post i parametertabellen, som fungerer som "rod" for 
+
+
+
+blah blah om opdatering af parametertabe via faneblade eller attribut skærmbillede
+
+
+### Navne for tokens
+De fleste (men ikke alle) navne i parameter tabellen kan angives med en valgfri værdi. Men det anbefales *kraftigt* at overholde følgende 
+konvetioner ved tilføjelse af nye modeller, forespørgsler, tabeller og felter:
+
+- Alle token navne for *tabeller* starter med "t_". Resten af navnet reflekterer funktionen af tabellen. Ved navngivning af token for de 
+oprindelige 11 modeller er det valgt at lade funktionsbeskrivelsen være på engelsk - for at markere disse data som 
+"noget GIS administarorer behandler".
+
+    |Token navn|Peger på|
+    |---|---|
+    |t_bioscore| Bioscore tabel|
+    |t_build_usage| Bygningsanvendelse (administrationstabel)|
+    |t_building| Bygningstabel|
+    |t_company| Firma tabel|
+    |t_damage| Skadefunktioner (administrations tabel)|
+    |t_flood| Oversvømmelses tabel|
+    |t_human_health| Oplysninger om beboere|
+    |t_infrastructure| Infrastruktur tabel|
+    |t_publicservice| Public service områder|
+    |t_recreative| Rekreative områder|
+    |t_road_traffic| Vejdata tabel|
+    |t_sqmprice| Gennemsnitlig kvm.pris fordelt på kommuner (administrations tabel)|
+    |t_tourism| Turisme tabel|
+
+- Token navn for generaliserede SQL forespørgsler starter med "q_", efterfulgt af query funktion på engelsk.
+
+    Eksempel: "q_building": Skademodel fro bygninger. Generelt set følger query-navne samme mønster som for tabeller. 
+
+- Tokennavne for felter til tabeller og forespørgsler starter med "f_", efterfulgt af en funktionsbeskrivelse for feltet og afsluttes 
+med token navn for den tabel/query, som feltet tilhører.
+
+    Der findes pt. følgede funktionsbeskrivelser for felter
+
+    |Token navn prefix|Funktion|
+    |---|---|
+    |f_pkey_| Feltet er primary-key felt|
+    |f_geom_| Feltet er geometry felt|
+    |f_usage_code_| Feltet indeholder en bbr-kode|
+    |f_category_ | Feltet indeholder en hovedkategori for bygningsanvendelse|
+    |f_risk_| Feltet indeholder et beregnet risiko beløb|
+    |f_loss_| Feltet indeholder et beregnet værditab|
+    |f_damage_| Feltet indeholder et beregnet skadesbeløb|
+    |f_muncode_| Feltet indeholder en kommunekode|
+	
+   Øvrige felt token-navne bør beskrive feltets funktion på engelsk
+
+   Nogle eksempler: "f_pkid_t_building": primary key for bygningstabel; "f_geom_t_building": geometri felt for bygningstabel;  
+
+De ovenstående regler er *anbefalinger* ikke *absolutte krav* undtaget følgende: Angivelser for hhv. primary key og geometri 
+felter for queries *skal* følgen formlerne; ellers vil systemt fejle ved genereringen af resultat tabeller. 
+
+
+
+### Brug af "type" feltet
+
+
+### Brug af "explanation" feltet
+
+### Brug af "sort" feltet
+
+### Brug af "checkable" feltet
+
+
+
+
+
 
 
 
