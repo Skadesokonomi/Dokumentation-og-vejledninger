@@ -282,6 +282,9 @@ sikkerhedskopiering er gennegået i installationsvejledningen, så disse oplysni
 
 I QGIS
 
+WITH RECURSIVE tree_search AS (SELECT *, 0 AS "level" FROM fdc_admin.parametre WHERE "parent" = '' AND name <> '' UNION ALL SELECT t.*, ts."level"+1 AS "level" FROM fdc_admin.parametre t, tree_search ts WHERE t."parent" = ts."name") SELECT '|' || parent || '|' || name || '|' || type || '|' || left(left(value,30) || '...'), || '|' explanation FROM tree_search ORDER BY "level", "sort"
+
+
 |Gruppe|Navn|Værdi|Funktion|
 |---|---|---|---|
 | |General| |Hovedgrupper til administration af grundlæggende parametre for systemet|
