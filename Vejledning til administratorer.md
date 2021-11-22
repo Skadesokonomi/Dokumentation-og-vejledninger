@@ -219,7 +219,7 @@ felter for queries *skal* følgen formlerne; ellers vil systemt fejle ved genere
 
 - "G": Parameter benyttes som en gruppe, dvs. opdeling af paramterposte i logiske sammenhænge. Den indeholder ingen værdi, men paramter
  navnet vises i fanebladenes træstruktur. Paramtre, som skal vises under denne gruppe skal tildeles gruppe parameterens navn som 
- værdi i felt "parent"
+ værdi i felt "parent|
 
     Eksempel: I faneblad "Generelt" findes en parameterpost "Name templates". Parametrene "Cell layername" "Group name template", 
 	"Main groupname" o.a. har alle fået tildelt "Name templates" som "parent". Det giver følgende resultat: 
@@ -230,14 +230,14 @@ felter for queries *skal* følgen formlerne; ellers vil systemt fejle ved genere
 - "I": Parameter skal indeholde et heltal. Når man dobbeltklikker på paramternavnet eller værdi feltet i fanebladet, vil der
  vises en bruger dialog, hvor værdien kan ændres. Dialogen bliver udformet, således der kun kan indtastes et heltal. Minimu og maksimum 
  værdier bestemmes af værdierne indtastet i felterne "minval" og "maxval". Stepstørrelsen i det tilhørende rullefelt bestemmes af værdien 
- i felt "lookupvalues"
+ i felt "lookupvalues|
  
      Eksempel: Parameter "Cell size" har type "I", værdi 100, minval: 10, maxval: 1000, lookvalue: 50. I dialogen vise værdien 100, som kan ændres fra 10 til 1000. Og bruges scroll-pilene ændres værdier i skridt af 50. 
 
 - "R": Parameter skal indeholde et reelt tal. Når man dobbeltklikker på paramternavnet eller værdi feltet i fanebladet, vil der
  vises en bruger dialog, hvor værdien kan ændres. Dialogen bliver udformet, således der kun kan indtastes et reelle tal. Minimum og 
  maksimum værdier bestemmes af værdierne indtastet i felterne "minval" og "maxval". Stepstørrelsen i det tilhørende rullefelt bestemmes 
- af værdien i felt "lookupvalues"
+ af værdien i felt "lookupvalues|
 
 - "O" Parameter skal indeholde een bestemt værdi udvalgt fra en forudbestemt liste. Listen er værdisat i felt "lookupvalues" hvor den optræder 
 som en tekst, som er sammensat af de mulige værdier adskilt af tegnet "¤" (SHIFT-4 på et dansk tastatur) . Ved dobbeltklik på enten navn 
@@ -273,7 +273,7 @@ Hvert faneblad representeres af en gruppepost (parameter type "G") i parameterta
 
 
 
-# Administrator vejledning for QGIS plugin "Skadesøkonomi"
+# Administrator vejledning for QGIS plugin "Skadesøkonomi|
 
 Selve installationen af hhv. plugin og tilhørende database, inklusive opsætning af Postgres username/password, 
 sikkerhedskopiering er gennegået i installationsvejledningen, så disse oplysning kan findes i denne vejledning.
@@ -282,166 +282,166 @@ sikkerhedskopiering er gennegået i installationsvejledningen, så disse oplysni
 
 I QGIS
 
-WITH RECURSIVE tree_search AS (SELECT *, 0 AS "level" FROM fdc_admin.parametre WHERE "parent" = '' AND name <> '' UNION ALL SELECT t.*, ts."level"+1 AS "level" FROM fdc_admin.parametre t, tree_search ts WHERE t."parent" = ts."name") SELECT '|' || parent || '|' || name || '|' || type || '|' || left(left(value,30) || '...'), || '|' explanation FROM tree_search ORDER BY "level", "sort"
+WITH RECURSIVE tree_search AS (SELECT *, 0 AS "level" FROM fdc_admin.parametre WHERE "parent" = '' AND name <> '' UNION ALL SELECT t.*, ts."level"+1 AS "level" FROM fdc_admin.parametre t, tree_search ts WHERE t."parent" = ts."name") SELECT '|' || parent || '|' || name || '|' || type || '|' || left(left(value,30) || '...'), || '|' explanation FROM tree_search ORDER BY "level", "sort|
 
 
 |Gruppe|Navn|Type|Værdi|Funktion|
-|---|---|---|---|
-"||General|G||Hovedgrupper til administration af grundlæggende parametre for systemet"
-"||Queries|G||Hovedgrupper til administration af Forespørgsler"
-"||Data|G||Hovedgruppe for administration af Tabeller"
-"||Reports|G||Hovedgruppe til administration og kørsel af Rapporter"
-"||Models|G||Hovedgruppe for administration og kørsel af  Modeller"
-"|General|Delete parameter table|P|DELETE FROM {parametertable}...|"
-"|General|Create cell layer template|P|CREATE TABLE IF NOT EXISTS {ce...|"
-"|General|Fetch parameter table|P|WITH RECURSIVE tree_search AS ...|"
-"|General|Cell size|I|100|"
-"|General|Insert parameter table|P|INSERT INTO {parametertable} (...|"
-"|General|Clear cell layer template|P|UPDATE ""{schema}"".""{table}"" SE...|"
-"|General|Cell layername|T|celler|"
-"|Models|Generelle modelværdier|G||Afsnit, hvor parametre, der bruges i mange forskellige modeller, kan værdisættes"
-"|General|Name of model value section|T|Generelle modelværdier|"
-"|General|update cell layer|P|WITH cte AS (   SELECT     a.f...|"
-"|Models|Kritisk infrastruktur|G||Skademodeller for Kritisk infrastruktur"
-"|Models|Offentlig service|G||Skademodeller for Offentlig service"
-"|Models|Vej og trafik|G||Skademodeller for Vej og trafik"
-"|Models|Bygninger|G||Skademodeller for Bygninger"
-"|Models|Biodiversitet|G||Skademodeller for Biodiversitet"
-"|Models|Rekreative områder|T||Skademodeller for Rekreative områder"
-"|Models|Turisme|G||Skademodeller for Turisme"
-"|Models|Industri|G| |Skademodeller for Industri"
-"|Queries|q_infrastructure|P|SELECT DISTINCT   k.*   FROM {...|"
-"|Queries|q_publicservice|P|SELECT DISTINCT   k.*   FROM {...|"
-"|Models|Mennesker og helbred|G||Skademodeller for Mennesker og helbred"
-"|Data|t_human_health|T|fdc_data.mennesker|Parametergruppe til tabel ""mennesker"""
-"|Data|t_recreative|T|fdc_data.rekreative_omr|Parametergruppe til tabel ""rekreative områder"""
-"|Data|t_flood|T|fdc_data.oversvoem|Parametergruppe til tabel ""oversvømmelser"""
-"|Data|t_infrastructure|T|fdc_data.kritisk_infrastruktur...|Parametergruppe til tabel ""kritisk infrastruktur"""
-"|Data|t_building|T|fdc_data.bygninger|Parametergruppe til tabel ""Bygninger"""
-"|Data|t_build_usage|T|fdc_admin.bbr_anvendelse|Parametergruppe til opslagstabel ""bbr-anvendelse"""
-"|Data|t_sqmprice|T|fdc_admin.kvm_pris|Parametergruppe til opslagstabel ""kommunal kvm. pris"""
-"|Data|t_damage|T|fdc_admin.skadefunktioner|Parametergruppe til opslagstabel ""skadesfunktioner"""
-"|General|Drop schema command|P|DROP SCHEMA {} /CASCADE|"
-"|General|Create schema command|P|CREATE SCHEMA {}|"
-"|General|Create_result_table|P|CREATE TABLE IF NOT EXISTS ""{R...|SQL template for creating result tables"
-"|General|Main groupname|T|Modeller|"
-"|General|Group name template|T|Kørsel: {time_stamp}|"
-"|General|Create_result_pkey|P|ALTER TABLE ""{Result_schema}""....|"
-"|General|Create_result_index|P|CREATE INDEX ON ""{Result_schem...|"
-"|General|Model_layergroup|T|Resultater fra modelkørsler|"
-"|General|Create comment command|P|COMMENT ON {} {} IS {}|"
-"|Queries|q_building|P|WITH ob AS (     SELECT       ...|SQL template for ""Bygninger"" model "
-"|Queries|q_bioscore_spatial|P|SELECT   b.{f_pkey_t_bioscore}...|"
-"|Queries|q_comp_nobuild|P|SELECT    c.{f_pkey_t_company}...|"
-"|Queries|q_bioscore_alphanumeric|P|  SELECT   row_number() over (...|"
-"|Queries|q_surrounding_loss|P|WITH    vb AS (     SELECT    ...|SQL template for ""Nabobygninge værditabar"" model "
-"|Queries|q_comp_build|P|WITH fb AS (   SELECT DISTINCT...|Query for compagny-buiding-emplyee"
-"|Queries|q_recreative|P|WITH fr AS (   SELECT      r.{...|"
-"|Queries|q_road_traffic|P|WITH     tr AS (         SELEC...|"
-"|Queries|q_human_health|P|WITH ob AS (   SELECT     b.{f...|"
-"|Queries|q_tourism_spatial|P|WITH pn AS (   SELECT DISTINCT...|"
-"|Queries|q_tourism_alphanumeric|P|WITH pn AS (   SELECT     row_...|"
-"|General|Result_schema|T|fdc_results|Name of schema to place result tables in"
-"|Data|t_company|T|fdc_data.industri|Parametergruppe til tabel ""industri"""
-"|Data|t_publicservice|T|fdc_data.offentlig_service|"
-"|Data|t_road_traffic|T|fdc_data.vejnet|Parametergruppe til tabel ""vejnet"""
-"|Data|t_tourism|T|fdc_admin.turisme|Parametergruppe til opslagstabel ""turisme"""
-"|Data|t_bioscore|T|fdc_data.biodiversitet|Parametergruppe til tabel ""biodiversitet"""
-"|q_human_health|f_risk_q_human_health|T|risiko_kr|"
-"|q_building|f_cellar_damage_q_building|T|skadebeloeb_kaelder_kr|"
-"|q_human_health|f_damage_q_human_health|T|omkostning_kr|"
-"|Bygninger|Værditab, skaderamte bygninger (%)|R|10.0|Her angives størrelsen på reduktionen i salgspris for de bygninger som bliver berørt af den pågældende oversvømmelse. Tabet beregnes som en procentsats, som angives af brugeren, af den gennemsnitlige kommunale m2 pris for solgte boliger i løbet af de seneste år. Det anbefales at anvende værdien 10% såfremt man ikke har bedre data."
-"|Turisme|Antal tabte døgn|I|20|Her angives antallet af dage hvor bygningerne som bliver berørt af den pågældende oversvømmelse ikke kan anvendes til turistformål pga. skader eller oprydning efter oversvømmelsen.  "
-"|q_infrastructure|f_pkey_q_infrastructure|T|objectid|"
-"|q_infrastructure|f_geom_q_infrastructure|T|geom|"
-"|q_publicservice|f_pkey_q_publicservice|T|objectid|"
-"|q_publicservice|f_geom_q_publicservice|T|geom|"
-"|q_building|f_damage_q_building|T|skadebeloeb_kr|"
-"|q_building|f_loss_q_building|T|vaerditab_kr|"
-"|q_building|f_risk_q_building|T|risiko_kr|"
-"|Generelle modelværdier|Returperiode for hændelse i dag (år)|I|20|Indtast returperioden under nuværende klima for den oversvømmelseshændelse som der beregnes skader og risiko for. Returperioden angives i år."
-"|t_infrastructure|f_geom_t_infrastructure|T|geom|"
-"|q_tourism_spatial|f_damage_q_tourism_spatial|T|tot_kr|"
-"|q_tourism_spatial|f_risk_q_tourism_spatial|T|risiko_kr|"
-"|t_infrastructure|f_pkey_t_infrastructure|T|objectid|"
-"|t_recreative|f_geom_t_recreative|T|geom|"
-"|t_publicservice|f_geom_t_publicservice|T|geom|"
-"|q_surrounding_loss|f_risk_q_surrounding_loss|T|risiko_kr|"
-"|q_surrounding_loss|f_loss_q_surrounding_loss|T|vaerditab_kr|"
-"|t_publicservice|f_pkey_t_publicservice|T|objectid|"
-"|q_road_traffic|f_risk_q_road_traffic|T|risiko_kr|"
-"|q_road_traffic|f_damage_q_road_traffic|T|pris_total_kr|"
-"|q_recreative|f_damage_q_recreative|T|total_omkost_kr|"
-"|q_recreative|f_risk_q_recreative|T|risiko_kr|"
-"|Generelle modelværdier|Returperiode for hændelse i fremtiden (år)|I|5|Indtast returperioden om 100 år under fremtidigt klima for den oversvømmelseshændelse som der beregnes skader og risiko for. Dette kan f.eks. være under klimascenarie RCP4.5 eller RCP8.5 Returperioden angives i år."
-"|Generelle modelværdier|Medtag i risikoberegninger|O|Skadebeløb|Her vælger man om det kun er skadeomkostningen eller skadeomkostning inkl. værditab for bygninger som inkluderes i risikoberegningen."
-"|Biodiversitet|Biodiversitet, kort|T||Sæt hak såfremt modellen skal identificere særlige levesteder for rødlistede arter som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse. Her vises levestederne geografisk på et kort."
-"|q_bioscore_alphanumeric|f_pkey_q_bioscore_alphanumeric|T|fid|"
-"|Industri|Industri, personale i bygninger|T| |Sæt hak såfremt modellen skal identificere de virksomheder som bliver berørt af den pågældende oversvømmelse, og angive antallet af medarbejdere per virksomhed."
-"|q_building|f_pkey_q_building|T|fid|Name of primary keyfield for query"
-"|q_building|f_geom_q_building|T|geom_byg|Field name for geometry column"
-"|q_tourism_spatial|f_geom_q_tourism_spatial|T|geom|Field name for geometry field in tourism query"
-"|q_tourism_spatial|f_pkey_q_tourism_spatial|T|id|"
-"|q_tourism_alphanumeric|f_pkey_q_tourism_alphanumeric|T|fid|"
-"|q_surrounding_loss|f_pkey_q_surrounding_loss|T|fid|"
-"|q_surrounding_loss|f_geom_q_surrounding_loss|T|geom_byg|"
-"|q_bioscore_spatial|f_geom_q_bioscore_spatial|T|geom_clip|"
-"|q_comp_build|f_pkey_q_comp_build|T|fid|"
-"|q_comp_build|f_geom_q_comp_build|T|geom_byg|Field name for building geometry"
-"|q_comp_nobuild|f_geom_q_comp_nobuild|T|geom|"
-"|q_comp_nobuild|f_pkey_q_comp_nobuild|T|fid|"
-"|q_human_health|f_pkey_q_human_health|T|fid|"
-"|q_human_health|f_geom_q_human_health|T|geom|"
-"|q_recreative|f_pkey_q_recreative|T|id|"
-"|q_recreative|f_geom_q_recreative|T|geom|"
-"|q_road_traffic|f_pkey_q_road_traffic|T|id|"
-"|q_road_traffic|f_geom_q_road_traffic|T|geom|"
-"|t_road_traffic|f_number_cars_t_road_traffic|I|trafik_tal|"
-"|t_road_traffic|f_geom_t_road_traffic|T|geom|"
-"|t_road_traffic|f_pkey_t_road_traffic|T|objectid|"
-"|t_company|f_pkey_t_company|T|""OBJECTID""|"
-"|t_company|f_empcount_t_company|I|aarsbes_an|"
-"|t_company|f_geom_t_company|T|geom|"
-"|t_bioscore|f_pkey_t_bioscore|T|id|"
-"|t_bioscore|f_geom_t_bioscore|T|geom|"
-"|t_bioscore|f_bioscore_t_bioscore|T|""Bioscore""|"
-"|t_human_health|f_pkey_t_human_health|T|objectid|Field name for keyfield in Human health table "
-"|t_human_health|f_age_t_human_health|T|alder_rand|Field name for age field in Human health table "
-"|t_human_health|f_geom_t_human_health|T|geom|Field name for geometry field in Human health table "
-"|t_recreative|f_pkey_t_recreative|T|objectid|"
-"|t_flood|f_geom_t_flood|T|geom|Field name for geometry field in flood table"
-"|t_flood|f_depth_t_flood|T|""Vanddybde""|Field name for detph field in flood table "
-"|t_building|f_muncode_t_building|T|komkode|Fieldname for municipality code for building table"
-"|t_building|f_geom_t_building|T|geom|Field name for geometry field in building table"
-"|t_building|f_pkey_t_building|T|""OBJECTID""|Field name for keyfield in Building table "
-"|Generelle modelværdier|Minimum vanddybde (meter)|R|0.3|Her angives den minimale vanddybde på terræn som der skal til for at der opstår økonomiske tab i forbindelse med oversvømmelsen. Denne værdi angives i m, og anvendes kun for de sektorer hvor der ikke er angivet en alternativ minimum vanddybde."
-"|Offentlig service|Oversvømmet offentlig service|T||Sæt hak såfremt modellen skal identificere offentlig service som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse."
-"|Vej og trafik|Skadeberegning, vej og trafik|T||Sæt hak såfremt der skal beregnes økonomiske tab for vej og trafik i forbindelse med den pågældende oversvømmelseshændelse."
-"|Kritisk infrastruktur|Oversvømmet infrastruktur|T||Sæt hak såfremt modellen skal identificere kritisk infrastruktur som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse."
-"|Bygninger|Værditab nabobygninger|T||"
-"|t_tourism|f_pkey_t_tourism|T|bbr_anv_kode|"
-"|t_sqmprice|f_muncode_t_sqmprice|T|kom_kode|Fieldname for municipalitycode"
-"|t_sqmprice|f_sqmprice_t_sqmprice|T|kvm_pris|Fieldname for sqm price"
-"|Bygninger|Skadeberegninger, Bygninger|T||Skadeberegning for bygninger, forskellige skademodeller, med eller uden kælderberegning"
-"|t_building|f_cellar_area_t_building|T|kaelder123|"
-"|Biodiversitet|Biodiversitet, opsummering|T||Sæt hak såfremt modellen skal identificere særlige levesteder for rødlistede arter som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse. Her opsummeres de berørte levesteder i en tabel."
-"|Turisme|Turisme, Opsummering|T||Sæt hak såfremt der skal beregnes økonomiske tab for overnatningssteder som anvendes til turistformål. De økonomiske tab opsummeres i en tabel."
-"|Turisme|Turisme, Kort|T||Sæt hak såfremt der skal beregnes økonomiske tab for overnatningssteder som anvendes til turistformål. De berørte bygninger vises geografisk på et kort.  "
-"|t_building|f_usage_code_t_building|T|""BYG_ANVEND""|Fieldname for usage code for building table"
-"|t_build_usage|f_pkey_t_build_usage|T|bbr_anv_kode|Field name for keyfield in Building table "
-"|t_build_usage|f_usage_text_t_build_usage|T|bbr_anv_tekst|"
-"|t_damage|f_pkey_t_damage|T|skade_type, skade_kategori|Field name for keyfield in damage function table "
-"|t_damage|f_category_t_damage|T|skade_kategori|Field name for keyfield in damage function table "
-"|t_damage|f_type_t_damage|T|skade_type|Field name for keyfield in damage function table "
-"|t_build_usage|f_category_t_build_usage|T|skade_kategori|Field name for keyfield in Building table "
-"|t_building|f_usage_text_t_building|T|""BYG_ANVE_1""|Fieldname for usage code for building table"
-"|Industri|Industri, punkter fejlplaceret|T||"
-"|Mennesker og helbred|Humane omkostninger |T||Sæt hak såfremt der skal beregnes økonomiske tab ifm. oprydning, sygedage og feriedage som en konsekvens af ens ejendom har været oversvømmet."
-"|Rekreative områder|Skadeberegning, Rekreative områder|T||Sæt hak såfremt der skal beregnes økonomiske tab i forbindelse med reduceret adgang til rekreative områder som bliver berørt at den pågældende oversvømmelse."
-"|Skadeberegning, vej og trafik|Oversvømmelsesperiode (dage)|I|24|Her angives det antal dage, hvor vejene ikke kan benyttes pga. oversvømmelsen."
-"|Skadeberegning, vej og trafik|Renovationspris pr meter vej (DKK)|I|20|Her angives den økonomiske omkostning til oprydning per meter vej som bliver oversvømmet. Omkostningen angives i DKK per meter."
-"|Skadeberegninger, Bygninger|Skadeberegning for kælder|O|Medtages ikke|Bestemmer skadeberegning for kælder medtages i udregningen"
-"|Skadeberegninger, Bygninger|Skadetype|O|Stormflod|Valg af økonomisk skademodel"
-"|Værditab nabobygninger|Bredde af nabozone (meter)|R|300.0|Maks. afstand for nabobygninger fra skaderamte bygningerder som medtages i beregningen"
-"|Værditab nabobygninger|Faktor for værditab|R|0.50|Faktor værdi til beregning af værditab for nabobygninger ud fra værditab for skaderamte bygninger"
-"|Skadeberegning, Rekreative områder|Antal dage med oversvømmelse|I|24|Angiv antallet af dage hvor de rekreative områder ikke kan anvendes som en konsekvens af den pågældende oversvømmelse."
+|---|---|---|---|---|
+||General|G||Hovedgrupper til administration af grundlæggende parametre for systemet|
+||Queries|G||Hovedgrupper til administration af Forespørgsler|
+||Data|G||Hovedgruppe for administration af Tabeller|
+||Reports|G||Hovedgruppe til administration og kørsel af Rapporter|
+||Models|G||Hovedgruppe for administration og kørsel af  Modeller|
+|General|Delete parameter table|P|DELETE FROM {parametertable}...||
+|General|Create cell layer template|P|CREATE TABLE IF NOT EXISTS {ce...||
+|General|Fetch parameter table|P|WITH RECURSIVE tree_search AS ...||
+|General|Cell size|I|100||
+|General|Insert parameter table|P|INSERT INTO {parametertable} (...||
+|General|Clear cell layer template|P|UPDATE ""{schema}"".""{table}"" SE...||
+|General|Cell layername|T|celler||
+|Models|Generelle modelværdier|G||Afsnit, hvor parametre, der bruges i mange forskellige modeller, kan værdisættes|
+|General|Name of model value section|T|Generelle modelværdier||
+|General|update cell layer|P|WITH cte AS (   SELECT     a.f...||
+|Models|Kritisk infrastruktur|G||Skademodeller for Kritisk infrastruktur|
+|Models|Offentlig service|G||Skademodeller for Offentlig service|
+|Models|Vej og trafik|G||Skademodeller for Vej og trafik|
+|Models|Bygninger|G||Skademodeller for Bygninger|
+|Models|Biodiversitet|G||Skademodeller for Biodiversitet|
+|Models|Rekreative områder|T||Skademodeller for Rekreative områder|
+|Models|Turisme|G||Skademodeller for Turisme|
+|Models|Industri|G| |Skademodeller for Industri|
+|Queries|q_infrastructure|P|SELECT DISTINCT   k.*   FROM {...||
+|Queries|q_publicservice|P|SELECT DISTINCT   k.*   FROM {...||
+|Models|Mennesker og helbred|G||Skademodeller for Mennesker og helbred|
+|Data|t_human_health|T|fdc_data.mennesker|Parametergruppe til tabel ""mennesker""|
+|Data|t_recreative|T|fdc_data.rekreative_omr|Parametergruppe til tabel ""rekreative områder""|
+|Data|t_flood|T|fdc_data.oversvoem|Parametergruppe til tabel ""oversvømmelser""|
+|Data|t_infrastructure|T|fdc_data.kritisk_infrastruktur...|Parametergruppe til tabel ""kritisk infrastruktur""|
+|Data|t_building|T|fdc_data.bygninger|Parametergruppe til tabel ""Bygninger""|
+|Data|t_build_usage|T|fdc_admin.bbr_anvendelse|Parametergruppe til opslagstabel ""bbr-anvendelse""|
+|Data|t_sqmprice|T|fdc_admin.kvm_pris|Parametergruppe til opslagstabel ""kommunal kvm. pris""|
+|Data|t_damage|T|fdc_admin.skadefunktioner|Parametergruppe til opslagstabel ""skadesfunktioner""|
+|General|Drop schema command|P|DROP SCHEMA {} /CASCADE||
+|General|Create schema command|P|CREATE SCHEMA {}||
+|General|Create_result_table|P|CREATE TABLE IF NOT EXISTS ""{R...|SQL template for creating result tables|
+|General|Main groupname|T|Modeller||
+|General|Group name template|T|Kørsel: {time_stamp}||
+|General|Create_result_pkey|P|ALTER TABLE ""{Result_schema}""....||
+|General|Create_result_index|P|CREATE INDEX ON ""{Result_schem...||
+|General|Model_layergroup|T|Resultater fra modelkørsler||
+|General|Create comment command|P|COMMENT ON {} {} IS {}||
+|Queries|q_building|P|WITH ob AS (     SELECT       ...|SQL template for ""Bygninger"" model |
+|Queries|q_bioscore_spatial|P|SELECT   b.{f_pkey_t_bioscore}...||
+|Queries|q_comp_nobuild|P|SELECT    c.{f_pkey_t_company}...||
+|Queries|q_bioscore_alphanumeric|P|  SELECT   row_number() over (...||
+|Queries|q_surrounding_loss|P|WITH    vb AS (     SELECT    ...|SQL template for ""Nabobygninge værditabar"" model |
+|Queries|q_comp_build|P|WITH fb AS (   SELECT DISTINCT...|Query for compagny-buiding-emplyee|
+|Queries|q_recreative|P|WITH fr AS (   SELECT      r.{...||
+|Queries|q_road_traffic|P|WITH     tr AS (         SELEC...||
+|Queries|q_human_health|P|WITH ob AS (   SELECT     b.{f...||
+|Queries|q_tourism_spatial|P|WITH pn AS (   SELECT DISTINCT...||
+|Queries|q_tourism_alphanumeric|P|WITH pn AS (   SELECT     row_...||
+|General|Result_schema|T|fdc_results|Name of schema to place result tables in|
+|Data|t_company|T|fdc_data.industri|Parametergruppe til tabel ""industri""|
+|Data|t_publicservice|T|fdc_data.offentlig_service||
+|Data|t_road_traffic|T|fdc_data.vejnet|Parametergruppe til tabel ""vejnet""|
+|Data|t_tourism|T|fdc_admin.turisme|Parametergruppe til opslagstabel ""turisme""|
+|Data|t_bioscore|T|fdc_data.biodiversitet|Parametergruppe til tabel ""biodiversitet""|
+|q_human_health|f_risk_q_human_health|T|risiko_kr||
+|q_building|f_cellar_damage_q_building|T|skadebeloeb_kaelder_kr||
+|q_human_health|f_damage_q_human_health|T|omkostning_kr||
+|Bygninger|Værditab, skaderamte bygninger (%)|R|10.0|Her angives størrelsen på reduktionen i salgspris for de bygninger som bliver berørt af den pågældende oversvømmelse. Tabet beregnes som en procentsats, som angives af brugeren, af den gennemsnitlige kommunale m2 pris for solgte boliger i løbet af de seneste år. Det anbefales at anvende værdien 10% såfremt man ikke har bedre data.|
+|Turisme|Antal tabte døgn|I|20|Her angives antallet af dage hvor bygningerne som bliver berørt af den pågældende oversvømmelse ikke kan anvendes til turistformål pga. skader eller oprydning efter oversvømmelsen.  |
+|q_infrastructure|f_pkey_q_infrastructure|T|objectid||
+|q_infrastructure|f_geom_q_infrastructure|T|geom||
+|q_publicservice|f_pkey_q_publicservice|T|objectid||
+|q_publicservice|f_geom_q_publicservice|T|geom||
+|q_building|f_damage_q_building|T|skadebeloeb_kr||
+|q_building|f_loss_q_building|T|vaerditab_kr||
+|q_building|f_risk_q_building|T|risiko_kr||
+|Generelle modelværdier|Returperiode for hændelse i dag (år)|I|20|Indtast returperioden under nuværende klima for den oversvømmelseshændelse som der beregnes skader og risiko for. Returperioden angives i år.|
+|t_infrastructure|f_geom_t_infrastructure|T|geom||
+|q_tourism_spatial|f_damage_q_tourism_spatial|T|tot_kr||
+|q_tourism_spatial|f_risk_q_tourism_spatial|T|risiko_kr||
+|t_infrastructure|f_pkey_t_infrastructure|T|objectid||
+|t_recreative|f_geom_t_recreative|T|geom||
+|t_publicservice|f_geom_t_publicservice|T|geom||
+|q_surrounding_loss|f_risk_q_surrounding_loss|T|risiko_kr||
+|q_surrounding_loss|f_loss_q_surrounding_loss|T|vaerditab_kr||
+|t_publicservice|f_pkey_t_publicservice|T|objectid||
+|q_road_traffic|f_risk_q_road_traffic|T|risiko_kr||
+|q_road_traffic|f_damage_q_road_traffic|T|pris_total_kr||
+|q_recreative|f_damage_q_recreative|T|total_omkost_kr||
+|q_recreative|f_risk_q_recreative|T|risiko_kr||
+|Generelle modelværdier|Returperiode for hændelse i fremtiden (år)|I|5|Indtast returperioden om 100 år under fremtidigt klima for den oversvømmelseshændelse som der beregnes skader og risiko for. Dette kan f.eks. være under klimascenarie RCP4.5 eller RCP8.5 Returperioden angives i år.|
+|Generelle modelværdier|Medtag i risikoberegninger|O|Skadebeløb|Her vælger man om det kun er skadeomkostningen eller skadeomkostning inkl. værditab for bygninger som inkluderes i risikoberegningen.|
+|Biodiversitet|Biodiversitet, kort|T||Sæt hak såfremt modellen skal identificere særlige levesteder for rødlistede arter som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse. Her vises levestederne geografisk på et kort.|
+|q_bioscore_alphanumeric|f_pkey_q_bioscore_alphanumeric|T|fid||
+|Industri|Industri, personale i bygninger|T| |Sæt hak såfremt modellen skal identificere de virksomheder som bliver berørt af den pågældende oversvømmelse, og angive antallet af medarbejdere per virksomhed.|
+|q_building|f_pkey_q_building|T|fid|Name of primary keyfield for query|
+|q_building|f_geom_q_building|T|geom_byg|Field name for geometry column|
+|q_tourism_spatial|f_geom_q_tourism_spatial|T|geom|Field name for geometry field in tourism query|
+|q_tourism_spatial|f_pkey_q_tourism_spatial|T|id||
+|q_tourism_alphanumeric|f_pkey_q_tourism_alphanumeric|T|fid||
+|q_surrounding_loss|f_pkey_q_surrounding_loss|T|fid||
+|q_surrounding_loss|f_geom_q_surrounding_loss|T|geom_byg||
+|q_bioscore_spatial|f_geom_q_bioscore_spatial|T|geom_clip||
+|q_comp_build|f_pkey_q_comp_build|T|fid||
+|q_comp_build|f_geom_q_comp_build|T|geom_byg|Field name for building geometry|
+|q_comp_nobuild|f_geom_q_comp_nobuild|T|geom||
+|q_comp_nobuild|f_pkey_q_comp_nobuild|T|fid||
+|q_human_health|f_pkey_q_human_health|T|fid||
+|q_human_health|f_geom_q_human_health|T|geom||
+|q_recreative|f_pkey_q_recreative|T|id||
+|q_recreative|f_geom_q_recreative|T|geom||
+|q_road_traffic|f_pkey_q_road_traffic|T|id||
+|q_road_traffic|f_geom_q_road_traffic|T|geom||
+|t_road_traffic|f_number_cars_t_road_traffic|I|trafik_tal||
+|t_road_traffic|f_geom_t_road_traffic|T|geom||
+|t_road_traffic|f_pkey_t_road_traffic|T|objectid||
+|t_company|f_pkey_t_company|T|""OBJECTID""||
+|t_company|f_empcount_t_company|I|aarsbes_an||
+|t_company|f_geom_t_company|T|geom||
+|t_bioscore|f_pkey_t_bioscore|T|id||
+|t_bioscore|f_geom_t_bioscore|T|geom||
+|t_bioscore|f_bioscore_t_bioscore|T|""Bioscore""||
+|t_human_health|f_pkey_t_human_health|T|objectid|Field name for keyfield in Human health table |
+|t_human_health|f_age_t_human_health|T|alder_rand|Field name for age field in Human health table |
+|t_human_health|f_geom_t_human_health|T|geom|Field name for geometry field in Human health table |
+|t_recreative|f_pkey_t_recreative|T|objectid||
+|t_flood|f_geom_t_flood|T|geom|Field name for geometry field in flood table|
+|t_flood|f_depth_t_flood|T|""Vanddybde""|Field name for detph field in flood table |
+|t_building|f_muncode_t_building|T|komkode|Fieldname for municipality code for building table|
+|t_building|f_geom_t_building|T|geom|Field name for geometry field in building table|
+|t_building|f_pkey_t_building|T|""OBJECTID""|Field name for keyfield in Building table |
+|Generelle modelværdier|Minimum vanddybde (meter)|R|0.3|Her angives den minimale vanddybde på terræn som der skal til for at der opstår økonomiske tab i forbindelse med oversvømmelsen. Denne værdi angives i m, og anvendes kun for de sektorer hvor der ikke er angivet en alternativ minimum vanddybde.|
+|Offentlig service|Oversvømmet offentlig service|T||Sæt hak såfremt modellen skal identificere offentlig service som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse.|
+|Vej og trafik|Skadeberegning, vej og trafik|T||Sæt hak såfremt der skal beregnes økonomiske tab for vej og trafik i forbindelse med den pågældende oversvømmelseshændelse.|
+|Kritisk infrastruktur|Oversvømmet infrastruktur|T||Sæt hak såfremt modellen skal identificere kritisk infrastruktur som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse.|
+|Bygninger|Værditab nabobygninger|T|||
+|t_tourism|f_pkey_t_tourism|T|bbr_anv_kode||
+|t_sqmprice|f_muncode_t_sqmprice|T|kom_kode|Fieldname for municipalitycode|
+|t_sqmprice|f_sqmprice_t_sqmprice|T|kvm_pris|Fieldname for sqm price|
+|Bygninger|Skadeberegninger, Bygninger|T||Skadeberegning for bygninger, forskellige skademodeller, med eller uden kælderberegning|
+|t_building|f_cellar_area_t_building|T|kaelder123||
+|Biodiversitet|Biodiversitet, opsummering|T||Sæt hak såfremt modellen skal identificere særlige levesteder for rødlistede arter som bliver berørt i forbindelse med den pågældende oversvømmelseshændelse. Her opsummeres de berørte levesteder i en tabel.|
+|Turisme|Turisme, Opsummering|T||Sæt hak såfremt der skal beregnes økonomiske tab for overnatningssteder som anvendes til turistformål. De økonomiske tab opsummeres i en tabel.|
+|Turisme|Turisme, Kort|T||Sæt hak såfremt der skal beregnes økonomiske tab for overnatningssteder som anvendes til turistformål. De berørte bygninger vises geografisk på et kort.  |
+|t_building|f_usage_code_t_building|T|""BYG_ANVEND""|Fieldname for usage code for building table|
+|t_build_usage|f_pkey_t_build_usage|T|bbr_anv_kode|Field name for keyfield in Building table |
+|t_build_usage|f_usage_text_t_build_usage|T|bbr_anv_tekst||
+|t_damage|f_pkey_t_damage|T|skade_type, skade_kategori|Field name for keyfield in damage function table |
+|t_damage|f_category_t_damage|T|skade_kategori|Field name for keyfield in damage function table |
+|t_damage|f_type_t_damage|T|skade_type|Field name for keyfield in damage function table |
+|t_build_usage|f_category_t_build_usage|T|skade_kategori|Field name for keyfield in Building table |
+|t_building|f_usage_text_t_building|T|""BYG_ANVE_1""|Fieldname for usage code for building table|
+|Industri|Industri, punkter fejlplaceret|T|||
+|Mennesker og helbred|Humane omkostninger |T||Sæt hak såfremt der skal beregnes økonomiske tab ifm. oprydning, sygedage og feriedage som en konsekvens af ens ejendom har været oversvømmet.|
+|Rekreative områder|Skadeberegning, Rekreative områder|T||Sæt hak såfremt der skal beregnes økonomiske tab i forbindelse med reduceret adgang til rekreative områder som bliver berørt at den pågældende oversvømmelse.|
+|Skadeberegning, vej og trafik|Oversvømmelsesperiode (dage)|I|24|Her angives det antal dage, hvor vejene ikke kan benyttes pga. oversvømmelsen.|
+|Skadeberegning, vej og trafik|Renovationspris pr meter vej (DKK)|I|20|Her angives den økonomiske omkostning til oprydning per meter vej som bliver oversvømmet. Omkostningen angives i DKK per meter.|
+|Skadeberegninger, Bygninger|Skadeberegning for kælder|O|Medtages ikke|Bestemmer skadeberegning for kælder medtages i udregningen|
+|Skadeberegninger, Bygninger|Skadetype|O|Stormflod|Valg af økonomisk skademodel|
+|Værditab nabobygninger|Bredde af nabozone (meter)|R|300.0|Maks. afstand for nabobygninger fra skaderamte bygningerder som medtages i beregningen|
+|Værditab nabobygninger|Faktor for værditab|R|0.50|Faktor værdi til beregning af værditab for nabobygninger ud fra værditab for skaderamte bygninger|
+|Skadeberegning, Rekreative områder|Antal dage med oversvømmelse|I|24|Angiv antallet af dage hvor de rekreative områder ikke kan anvendes som en konsekvens af den pågældende oversvømmelse.|
