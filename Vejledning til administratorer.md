@@ -100,20 +100,24 @@ For at gøre SQL udtrykkene mere fleksible generaliseres udtrykket til følgende
     LEFT JOIN {t_mun_sqmprice} k ON b.{f_mun_code_t_building} = k.{f_mun_code_t_flood}
     WHERE o.{f_water_depth_t_flood} > {p_water_depth}
 
--Alle tabel- og feltnavne samt konstantværdier i SQL udtrykket erstattes af "tokens", som f.eks. "f_pkid_t_building". 
+- Alle tabel- og feltnavne samt konstantværdier i SQL udtrykket erstattes af "tokens", som f.eks. "f_pkid_t_building". 
 "tuborg" paranteserne {..} rundt om tokennavnet angiver at navnet er et token og ikke et reelt tabel/feltnavn eller 
 konstantværdi.
-- Selve SQL udtrykket gives også et navn, f.eks. "q_building_flood_loss" og gemmes i parametertabellen. 
 
-- Tabel, felt og konstant tokens gemmes også i parametertabellen. Sammen med de øvrige token oplysningerne gemmes også 
-tilhørsforholdet til SQL udtrykket representeret ved dets token navn. 
+- Selve SQL udtrykket gives også et parameter-navn, f.eks. "q_building_flood_loss" og gemmes i parametertabellen. 
 
-Få at udføre en af brugeren valgt model foretager plugin'et nu følgende:
+- Tabel, felt og konstant tokens oprettet i SQL udtrykket gemmes også i parameter-tabellen. Tilhørsforholdet til SQL udtrykket
+for de enkelte tokens og andre oplysninger gemmes også i parameter tabellen.
 
-- Det generaliserede SQL udtryk findes i parameter tabellens vha. udtrykkets navn.
+Få at udføre en af brugervalgt model foretager plugin'et nu følgende:
+
+- Det generaliserede SQL udtryk findes i parameter tabellens vha. SQL udtrykkets navn.
+
 - Alle øvrige tokens, som tilhører det generaliserede SQL udtryk findes også i parameter tabellen.
+
 - Der foretages en "søg og erstat" i teksten for det generaliserede SQL udtryk som finder token navne og erstatter disse  
 med token værdier.
+
 - SQL udtrykket - som nu indeholder korrekte tabel- og feltnavne samt konstant værdier eksekveres i databasen og 
 resultatet vises i QGIS's kortvindue.
 
@@ -125,7 +129,7 @@ før kørsel ved at ændre på de til modellen tilhørende token værdier for ko
 
 # Parameter tabel
 
-Placering og navn på parametertabel i databasen angives af administrator vha. valg og indtastningsfelter i Plugin. Se 
+Placering og navn på parametertabeller i databasen angives af GIS-administrator vha. valg og indtastningsfelter i Plugin. Se 
 senere i denne vejledning. 
 
 Parameter tabellen en den centrale informationstabel for Skadeøkonomi plugin'et. 
@@ -136,8 +140,7 @@ SQL udtryk for modellerne, alle "token" navne inkl. oversættelse for tabeller, 
 Endvidere indeholder tabellen en lang række andre administrative oplysninger nødvendige for at plugin'et kan 
 vise modelopbygningerne korrekt og at brugerne kan vælge modeller og sætte søgeværdier for for de enkelte modeller.
 
-Tabellen indeholder derfor en række forskellige oplysninger udover navn/værdi par. De forskellige kolonner og deres indhold 
-beskrives senere i dette afsnit.
+Tabellen indeholder - udover navn/værdi par - en række andre oplysninger.
 
 ## Struktur og feltbeskrivelse
 
@@ -157,6 +160,7 @@ beskrives senere i dette afsnit.
 
 
 ## Retningslinjer for værdisætning af parametertabel.
+
 
 
 ### Navne for Parameter navne (tokens)
